@@ -11,7 +11,7 @@ jobs:
           command: mkdir results_folder
       - run:
           name: Run Test
-          command: "jmeter -n -t DerivCom.jmx -l results_folder/jmeter_report.csv -e -o results_folder"
+          command: "jmeter -n -t DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder"
       - store_artifacts:
           path: results_folder
 
