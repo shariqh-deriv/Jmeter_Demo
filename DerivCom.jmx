@@ -18,7 +18,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">22</stringProp>
+        <stringProp name="ThreadGroup.num_threads">10</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
@@ -131,7 +131,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="website status" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="51508">400</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message">EU Deriv.com is NOT OK </stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
