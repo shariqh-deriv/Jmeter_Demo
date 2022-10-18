@@ -22,9 +22,9 @@ alias:
      command: |
         sudo mkdir results_folder
 
-  - &runTest
+  - &CircleCI_Jmeter
     run:
-     name:  Run Test
+     name:  Run Jmeter Test
      command: |
         jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
 
