@@ -12,8 +12,6 @@ jobs:
       - run:
           name: Run Test
           command: |
-            sudo apt-get update
-            sudo apt-get -y install git
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
