@@ -22,22 +22,22 @@ alias:
      command: |
         sudo mkdir results_folder
 
-  - &CircleCI_Jmeter
+  - &runTest
     run:
-     name:  Run Jmeter Test
+     name:  Run JmeterTest
      command: |
         jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
 
 jobs:
   CircleCI_Jmeter:
-    working_directory: ~/repo
+    <<: *default
     parallelism: 1
     steps:
       - checkout
       - *app_get
       - *git_install
       - *create_dir
-      - *CircleCI_Jmeter
+      - *runTest
       - store_test_results:
           path:  /results_folder
       - store_artifacts:
