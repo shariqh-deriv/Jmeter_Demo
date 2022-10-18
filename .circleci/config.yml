@@ -1,24 +1,54 @@
 version: 2.1
 
+default: &default
+  docker:
+    - image: ustb4/jmeter:latest
+  working_directory: ~/repo
+
+alias:
+  - &app_get
+    run:
+     name: install apt get
+     command: 'sudo apt-get update'
+
+  - &git_install
+    run:
+     name:  install git
+     command: 'sudo apt-get -y install git'
+  
+  - &create_dir
+    run:
+     name:  Create directory for reports
+     command: |
+        sudo mkdir results_folder
+
+  - &runTest
+    run:
+     name:  Run Test
+     command: |
+        jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+
 jobs:
   CircleCI_Jmeter:
-    docker:
-      - image: justb4/jmeter:latest
+    working_directory: ~/repo
+    parallelism: 1
     steps:
       - checkout
-      - run:
-          name: Make Result Directory
-          command: mkdir results_folder 
-      - run:
-          name: Run Test
-          command: |
-            echo "test echo"
-            jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+      - *app_get
+      - *git_install
+      - *create_dir
+      - *runTest
+      - store_test_results:
+          path:  /results_folder
       - store_artifacts:
-          path: results_folder
-
-
+          path:  /results_folder
+ 
 workflows:
-  CircleCI_Jmeter_workflow:
+  version: 2.1
+  workflow:
     jobs:
-      - CircleCI_Jmeter
+    - CircleCI_Jmeter:
+        filters:
+          branches:
+           ignore:
+             - trigger_percy
