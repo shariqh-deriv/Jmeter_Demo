@@ -37,7 +37,7 @@ jobs:
       - *app_get
       - *git_install
       - *create_dir
-      - *runTest
+      - *CircleCI_Jmeter
       - store_test_results:
           path:  /results_folder
       - store_artifacts:
