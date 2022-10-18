@@ -2,19 +2,19 @@ version: 2.1
 
 default: &default
   docker:
-    - image: justb4/jmeter:latest
+    - image: selenium/standalone-chrome
   working_directory: ~/repo
 
 alias:
   - &app_get
     run:
      name: install apt get
-     command: 'sudo apt-get install'
+     command: 'apt-get install'
 
   - &git_install
     run:
      name:  install git
-     command: 'sudo apt-get -y install git'
+     command: 'apt-get -y install git'
   
   - &create_dir
     run:
