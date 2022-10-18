@@ -2,7 +2,7 @@ version: 2.1
 
 default: &default
   docker:
-    - image: justb4/jmeter:latest
+    - image: selenium/standalone-chrome
   working_directory: ~/repo
 
 alias:
