@@ -8,16 +8,11 @@ jobs:
       - checkout
       - run:
           name: Make Result Directory
-          command: mkdir results_folder
-      - run:
-          name: Capture commit Message
-          command: COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-      - run:
-          name: Echo commit Message
-          command: echo $COMMIT_MESSAGE
+          command: mkdir results_folder 
       - run:
           name: Run Test
-          command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+          command: |
+            jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
 
