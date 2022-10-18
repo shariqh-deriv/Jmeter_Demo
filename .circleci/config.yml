@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Run Test
           command: |
-          jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+          "jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder"
       - store_artifacts:
           path: results_folder
 
