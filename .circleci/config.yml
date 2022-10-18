@@ -14,7 +14,7 @@ alias:
   - &git_install
     run:
      name:  install git
-     command: 'apt-get -y install git'
+     command: 'sudo apt-get -y install git'
   
   - &create_dir
     run:
