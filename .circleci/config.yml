@@ -44,6 +44,8 @@ jobs:
           path:  /results_folder
  
 workflows:
-  -CircleCI_Jmeter_workflow
-    job:
+  version: 2.1
+  workflow:
+    jobs:
     - CircleCI_Jmeter
+        
