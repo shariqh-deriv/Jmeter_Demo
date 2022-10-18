@@ -45,5 +45,5 @@ jobs:
  
 workflows:
   -CircleCI_Jmeter_workflow
-    jobs:
+    job:
     - CircleCI_Jmeter
