@@ -9,7 +9,7 @@ alias:
   - &app_get
     run:
      name: install apt get
-     command: 'apt-get update'
+     command: 'apt-get install -y sudo'
 
   - &git_install
     run:
