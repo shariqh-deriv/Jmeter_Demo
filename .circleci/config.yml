@@ -44,11 +44,6 @@ jobs:
           path:  /results_folder
  
 workflows:
-  version: 2.1
-  workflow:
+  -CircleCI_Jmeter_workflow
     jobs:
-    - CircleCI_Jmeter:
-        filters:
-          branches:
-           ignore:
-             - trigger_percy
+    - CircleCI_Jmeter
