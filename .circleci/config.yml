@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Run Test
           command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            echo "test echo"
             jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
