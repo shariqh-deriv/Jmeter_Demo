@@ -9,12 +9,12 @@ alias:
   - &app_get
     run:
      name: install apt get
-     command: 'sudo apt-get update'
+     command: 'apt-get update'
 
   - &git_install
     run:
      name:  install git
-     command: 'sudo apt-get -y install git'
+     command: 'apt-get -y install git'
   
   - &create_dir
     run:
