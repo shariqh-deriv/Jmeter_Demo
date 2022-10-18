@@ -2,7 +2,7 @@ version: 2.1
 
 default: &default
   docker:
-    - image: ustb4/jmeter:latest
+    - image: justb4/jmeter:latest
   working_directory: ~/repo
 
 alias:
