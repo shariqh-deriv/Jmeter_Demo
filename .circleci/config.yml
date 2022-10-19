@@ -11,7 +11,7 @@ alias:
   - &app_get
     run:
      name: install apt get
-     command: 'sudo apt-get install'
+     command: 'sudo apt-get update'
 
   - &git_install
     run:
