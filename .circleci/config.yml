@@ -25,7 +25,6 @@ alias:
       COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
       echo $COMMIT_MESSAGE
 
-  
   - &create_dir
     run:
      name:  Create directory for reports
@@ -46,6 +45,7 @@ jobs:
       - checkout
       - *app_get
       - *git_install
+      - *fetch_commit
       - *create_dir
       - *runTest
       - store_test_results:
