@@ -20,7 +20,7 @@ alias:
     run:
      name:  Create directory for reports
      command: |
-        sudo mkdir results_folder
+        mkdir results_folder
 
   - &runTest
     run:
