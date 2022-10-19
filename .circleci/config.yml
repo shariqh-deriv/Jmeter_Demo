@@ -1,4 +1,6 @@
 version: 2.1
+git: ganta/git@1.2.0
+
 
 default: &default
   docker:
