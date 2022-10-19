@@ -1,10 +1,8 @@
 version: 2.1
-git: ganta/git@1.2.0
-
 
 default: &default
   docker:
-    - image: selenium/standalone-chrome
+    - image: justb4/jmeter:latest
   working_directory: ~/repo
 
 alias:
@@ -47,7 +45,6 @@ jobs:
       - *git_install
       - *fetch_commit
       - *create_dir
-      - *runTest
       - store_test_results:
           path:  results_folder
       - store_artifacts:
