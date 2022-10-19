@@ -47,7 +47,6 @@ jobs:
       - *git_install
       - *fetch_commit
       - *create_dir
-      - *runTest
       - store_test_results:
           path:  results_folder
       - store_artifacts:
