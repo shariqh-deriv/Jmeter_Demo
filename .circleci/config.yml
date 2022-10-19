@@ -18,6 +18,14 @@ alias:
      name:  install git
      command: 'sudo apt-get -y install git'
   
+  - &fetch_commit
+    run:
+     name:  Get commit message
+     command: |
+      COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+      echo $COMMIT_MESSAGE
+
+  
   - &create_dir
     run:
      name:  Create directory for reports
