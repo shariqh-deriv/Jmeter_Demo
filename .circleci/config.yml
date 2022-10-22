@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   # Job one with a unique name
-  say_hello:
+  Install_Git:
     docker:
      - image: selenium/standalone-chrome
     steps:
@@ -21,7 +21,7 @@ jobs:
             echo $QANo
 
   # Job two with a unique name
-  say_goodbye:
+  Jmeter_Report:
     docker:
      - image: justb4/jmeter:latest
     steps:
@@ -36,9 +36,8 @@ jobs:
           path: results_folder
 
 workflows:
-  # Name of workflow
-  hello_and_goodbye:
-    # List of jobs that will run
+  Run_Test:
     jobs:
-      - say_hello
-      - say_goodbye
+      - Install_Git
+      - Jmeter_Report
+          requires: [Install_Git]
