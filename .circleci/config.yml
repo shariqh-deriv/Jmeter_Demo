@@ -27,6 +27,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name:  Show QA No.
+          command: echo $QANo
+      - run:
           name: Make Result Directory
           command: mkdir results_folder 
       - run:
