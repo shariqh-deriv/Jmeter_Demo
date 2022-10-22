@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  CircleCI_Jmeter:
+  Git:
     docker:
       - image: selenium/standalone-chrome
     steps:
