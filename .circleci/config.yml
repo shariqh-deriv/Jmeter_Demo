@@ -40,4 +40,5 @@ workflows:
     jobs:
       - Install_Git
       - Jmeter_Report
-          requires: [Install_Git]
+        requires: 
+          - Install_Git
