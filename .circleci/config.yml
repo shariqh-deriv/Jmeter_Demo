@@ -6,7 +6,19 @@ jobs:
     docker:
      - image: selenium/standalone-chrome
     steps:
-      - run: echo "Say hello to YAML!"
+      - checkout
+      - run:
+          name: install appt-get
+          command: sudo apt-get update
+      - run:
+          name:  install git 
+          command: sudo apt-get -y install git
+      - run:
+          name:  Get commit message
+          command: |
+            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
+            echo $QANo
 
   # Job two with a unique name
   say_goodbye:
