@@ -1,44 +1,32 @@
 version: 2.1
 
 jobs:
-  Install_Git:
+  # Job one with a unique name
+  say_hello:
     docker:
-      - image: selenium/standalone-chrome
+     - image: selenium/standalone-chrome
+    steps:
+      - run: echo "Say hello to YAML!"
+
+  # Job two with a unique name
+  say_goodbye:
+    docker:
+     - image: justb4/jmeter:latest
     steps:
       - checkout
       - run:
-          name: indtall apt-get
-          command: sudo apt-get update
+        name: Make Result Directory
+        command: mkdir results_folder 
       - run:
-          name: install git 
-          command: sudo apt-get -y install git
+        name:  Run JmeterTest
+        command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
-      - run:
-          name: echo commit 
-          command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
-            echo $QANo
-
-  CircleCI_Jmeter:
-    docker:
-      - image: justb4/jmeter:latest
-    steps:
-      - checkout
-      - run:
-          name: Make Result Directory
-          command: mkdir results_folder 
-      - run:
-          name: Run Test
-          command: |
-            echo "test echo"
-            jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
-      - store_artifacts:
-          path: results_folder
-
+        path: results_folder
 
 workflows:
-  CircleCI_Jmeter_workflow:
+  # Name of workflow
+  hello_and_goodbye:
+    # List of jobs that will run
     jobs:
-      - Install_Git
-      - CircleCI_Jmeter
+      - say_hello
+      - say_goodbye
