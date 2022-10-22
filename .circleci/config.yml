@@ -37,9 +37,9 @@ alias:
         jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
 
 jobs:
+  CircleCI_Jmeter:
   docker:
         - image: justb4/jmeter:latest
-  CircleCI_Jmeter:
     <<: *default
     parallelism: 1
     steps:
