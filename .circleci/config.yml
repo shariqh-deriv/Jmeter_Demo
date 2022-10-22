@@ -39,6 +39,6 @@ workflows:
   Run_Test:
     jobs:
       - Install_Git
-      - Jmeter_Report
-        requires: 
-          - Install_Git
+      - Jmeter_Report:
+          requires: 
+            - Install_Git
