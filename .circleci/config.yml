@@ -9,12 +9,11 @@ jobs:
     steps:
       - run: echo "Say hello to YAML!"
 
-      
+
   # Job two with a unique name
   say_goodbye:
     docker:
      - image: justb4/jmeter:latest
-        auth:
     steps:
       - run: echo "Say goodbye to YAML!"
 
