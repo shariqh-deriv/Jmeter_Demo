@@ -21,7 +21,8 @@ alias:
      name:  Get commit message
      command: |
       COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-      echo $COMMIT_MESSAGE
+      QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
+      echo $QANo
 
   - &create_dir
     run:
