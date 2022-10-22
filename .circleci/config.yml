@@ -15,11 +15,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Make Result Directory
-        command: mkdir results_folder 
+          name: Make Result Directory
+          command: mkdir results_folder 
       - run:
-        name:  Run JmeterTest
-        command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+          name:  Run JmeterTest
+          command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
         path: results_folder
 
