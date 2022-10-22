@@ -37,6 +37,7 @@ alias:
 
 jobs:
   CircleCI_Jmeter:
+    <<: *default
     parallelism: 1
     steps:
       - checkout
