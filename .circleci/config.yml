@@ -3,6 +3,7 @@ version: 2.1
 default: &default
   docker:
     - image: selenium/standalone-chrome
+    - image: justb4/jmeter:latest
 
 alias:
   - &app_get
