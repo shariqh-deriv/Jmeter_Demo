@@ -1,6 +1,25 @@
 version: 2.1
 
 jobs:
+  Install_Git:
+    docker:
+      - image: selenium/standalone-chrome
+    steps:
+      - checkout
+      - run:
+          name: indtall apt-get
+          command: sudo apt-get update
+      - run:
+          name: install git 
+          command: sudo apt-get -y install git
+      - store_artifacts:
+      - run:
+          name: echo commit 
+          command: |
+            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
+            echo $QANo
+
   CircleCI_Jmeter:
     docker:
       - image: justb4/jmeter:latest
@@ -21,4 +40,5 @@ jobs:
 workflows:
   CircleCI_Jmeter_workflow:
     jobs:
+      - Install_Git
       - CircleCI_Jmeter
