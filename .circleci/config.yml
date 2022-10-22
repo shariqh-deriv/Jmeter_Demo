@@ -1,59 +1,44 @@
 version: 2.1
 
-default: &default
-  docker:
-    - image: selenium/standalone-chrome
-    - image: justb4/jmeter:latest
-
-alias:
-  - &app_get
-    run:
-     name: install apt get
-     command: 'sudo apt-get update'
-
-  - &git_install
-    run:
-     name:  install git
-     command: 'sudo apt-get -y install git'
-  
-  - &fetch_commit
-    run:
-     name:  Get commit message
-     command: |
-      COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-      QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
-      echo $QANo
-
-  - &create_dir
-    run:
-     name:  Create directory for reports
-     command: |
-        mkdir results_folder
-
-  - &runTest
-    run:
-     name:  Run JmeterTest
-     command: |
-        jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+jobs:
+  CircleCI_Jmeter:
+    docker:
+      - image: selenium/standalone-chrome
+    steps:
+      - checkout
+      - run:
+          name: indtall apt-get
+          command: sudo apt-get update
+      - run:
+          name: install git 
+          command: sudo apt-get -y install git
+      - store_artifacts:
+      - run:
+          name: echo commit 
+          command: |
+            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
+            echo $QANo
 
 jobs:
   CircleCI_Jmeter:
-    <<: *default
-    parallelism: 1
+    docker:
+      - image: justb4/jmeter:latest
     steps:
       - checkout
-      - *app_get
-      - *git_install
-      - *fetch_commit
-      - *create_dir
-      - *runTest
-      - store_test_results:
-          path:  results_folder
+      - run:
+          name: Make Result Directory
+          command: mkdir results_folder 
+      - run:
+          name: Run Test
+          command: |
+            echo "test echo"
+            jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
-          path:  results_folder
- 
+          path: results_folder
+
+
 workflows:
-  version: 2.1
-  workflow:
+  CircleCI_Jmeter_workflow:
     jobs:
-    - CircleCI_Jmeter
+      - CircleCI_Jmeter
