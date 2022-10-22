@@ -3,7 +3,6 @@ version: 2.1
 default: &default
   docker:
     - image: selenium/standalone-chrome
-  working_directory: ~/repo
 
 alias:
   - &app_get
@@ -38,7 +37,6 @@ alias:
 
 jobs:
   CircleCI_Jmeter:
-    image: justb4/jmeter:latest
     parallelism: 1
     steps:
       - checkout
