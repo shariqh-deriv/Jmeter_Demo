@@ -21,7 +21,7 @@ jobs:
           name:  Run JmeterTest
           command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
-        path: results_folder
+          path: results_folder
 
 workflows:
   # Name of workflow
