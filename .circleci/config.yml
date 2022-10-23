@@ -2,8 +2,6 @@ version: 2.1
 
 jobs:
   # Job one with a unique name
-  environment:
-    QANo = "test"
   Install_Git:
     docker:
      - image: selenium/standalone-chrome
@@ -21,6 +19,7 @@ jobs:
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
             echo $QANo
+            echo 'export $QANo' >> "$BASH_ENV"
 
   # Job two with a unique name
   Jmeter_Report:
@@ -30,7 +29,7 @@ jobs:
       - checkout
       - run:
           name:  Show QA No.
-          command: echo $QANo
+          command: eecho ${QANo}
       - run:
           name: Make Result Directory
           command: mkdir results_folder 
