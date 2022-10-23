@@ -18,7 +18,7 @@ jobs:
           name:  Get commit message
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            echo $COMMIT_MESSAGE
+            echo "export COMMIT_MESSAGE" >> $BASH_ENV
             echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
       - run: 
           name: mkdir -p workspace
@@ -26,6 +26,7 @@ jobs:
       - run: 
           name: Put data is workspace 
           command: |
+            echo "export Git_Commit=$COMMIT_MESSAGE" >> workspace/new-env-vars
             echo "export QABox=$QANo" >> workspace/new-env-vars
             cat workspace/new-env-vars >> $BASH_ENV
       - persist_to_workspace:
@@ -44,6 +45,7 @@ jobs:
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
       - run: ls -l
+      - run: echo ${Git_Commit:-NULL}
       - run: echo ${QABox:-NULL}
       - persist_to_workspace:
           root: workspace
