@@ -22,9 +22,12 @@ jobs:
       - run: 
           name: mkdir -p workspace
           command: mkdir -p workspace
-      - run: echo "export QABox=$QANo" >> workspace/new-env-vars
-      - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo ${QABox:-NULL}
+      - run: 
+          name: Put data is workspace 
+          command: |
+            echo "export QABox=$QANo" >> workspace/new-env-vars
+            cat workspace/new-env-vars >> $BASH_ENV
+            echo ${QABox:-NULL}
       - persist_to_workspace:
           root: workspace
           paths:
