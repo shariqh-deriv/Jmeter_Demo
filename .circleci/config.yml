@@ -17,8 +17,7 @@ jobs:
       - run:
           name:  Get commit message
           command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            echo "export COMMIT_MESSAGE" >> $BASH_ENV
+            echo "export COMMIT_MESSAGE='$(git log --format=oneline -n 1 $CIRCLE_SHA1)'" >> $BASH_ENV
             echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
       - run: 
           name: mkdir -p workspace
