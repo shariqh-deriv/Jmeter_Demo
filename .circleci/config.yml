@@ -2,43 +2,46 @@ defaults: &defaults
   working_directory: /tmp/cci-test
 version: 2.1
 jobs:
-  s1:
+  Install_Git:
     <<: *defaults
     docker:
-      - image: golang:latest
+      - image: selenium/standalone-chrome
     steps:
       - checkout
-      - run: pwd
       - run:
-          name: set var
-          command: echo "export BAZ=baz.`date +%Y%m%d.%H%M`" >> $BASH_ENV
-      - run: echo "$BAZ"
-      - run: mkdir -p workspace
-      - run: echo "export FOO=foo.`date +%Y%m%d.%H%M%S`" >>workspace/new-env-vars
-      - run: echo "export BOB=$BAZ" >> workspace/new-env-vars
+          name: install appt-get
+          command: sudo apt-get update
+      - run:
+          name:  install git 
+          command: sudo apt-get -y install git
+      - run: 
+          name: mkdir -p workspace
+          command: mkdir -p workspace
+      - run:
+          name:  Get commit message
+          command: |
+            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
+            echo "export QANo" >>workspace/new-env-vars
       - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo ${FOO:-NULL}
-      - run: echo ${BAZ:-NULL}
-      - run: echo ${BOB:-NULL}
+      - run: echo ${QANo:-NULL}
       - persist_to_workspace:
           root: workspace
           paths:
               - new-env-vars
-  s2:
+
+
+  Jmeter_Report:
     <<: *defaults
     docker:
-      - image: golang:latest
+      - image: justb4/jmeter:latest
     steps:
       - attach_workspace:
           at: /tmp/cci-test/workspace
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
       - run: ls -l
-      - run: echo ${FOO:-NULL}
-      - run: echo ${BAZ:-NULL}
-      - run: echo ${BOB:-NULL}
-      - run: echo ${SUE:-NULL}
-      - run: echo "export SUE=sue.`date +%Y%m%d.%H%M%S`" >>workspace/new-env-vars
+      - run: echo ${QANo:-NULL}
       - persist_to_workspace:
           root: workspace
           paths:
@@ -48,7 +51,7 @@ workflows:
   version: 2.1
   example_jobs:
     jobs:
-      - s1
-      - s2:
+      - Install_Git
+      - Jmeter_Report:
           requires:
-            - s1
+            - Install_Git
