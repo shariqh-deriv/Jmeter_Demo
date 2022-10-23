@@ -14,18 +14,18 @@ jobs:
       - run:
           name:  install git 
           command: sudo apt-get -y install git
-      - run: 
-          name: mkdir -p workspace
-          command: mkdir -p workspace
       - run:
           name:  Get commit message
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
-            echo $QANo
-            echo "export QANo" >>workspace/new-env-vars
+            echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
+            echo "$QANo"
+      - run: 
+          name: mkdir -p workspace
+          command: mkdir -p workspace
+      - run: echo "export QABox=$QANo" >> workspace/new-env-vars
       - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo ${QANo:-NULL}
+      - run: echo ${QABox:-NULL}
       - persist_to_workspace:
           root: workspace
           paths:
@@ -42,7 +42,7 @@ jobs:
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
       - run: ls -l
-      - run: echo ${QANo:-NULL}
+      - run: echo ${QABox:-NULL}
       - persist_to_workspace:
           root: workspace
           paths:
