@@ -29,6 +29,8 @@ jobs:
             echo "export Git_Commit=$COMMIT_MESSAGE" >> workspace/new-env-vars
             echo "export QABox=$QANo" >> workspace/new-env-vars
             cat workspace/new-env-vars >> $BASH_ENV
+            echo $Git_Commit
+            echo QABox
       - persist_to_workspace:
           root: workspace
           paths:
