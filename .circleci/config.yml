@@ -18,6 +18,7 @@ jobs:
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             echo 'export QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"' >> "$BASH_ENV"
+            source "$BASH_ENV"
 
   # Job two with a unique name
   Jmeter_Report:
