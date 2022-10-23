@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name:  Show QA No.
-          command: eecho ${QANo}
+          command: echo ${QANo}
       - run:
           name: Make Result Directory
           command: mkdir results_folder 
