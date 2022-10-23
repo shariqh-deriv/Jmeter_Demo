@@ -40,8 +40,6 @@ jobs:
 workflows:
   Run_Test:
     jobs:
-      - build:
-          context: QANo
       - Install_Git
       - Jmeter_Report:
           requires: 
