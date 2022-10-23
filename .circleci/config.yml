@@ -1,5 +1,5 @@
 defaults: &defaults
-  working_directory: /tmp/cci-test
+  working_directory: ~/repo
 version: 2.1
 jobs:
   Install_Git:
@@ -44,7 +44,7 @@ jobs:
       - image: justb4/jmeter:latest
     steps:
       - attach_workspace:
-          at: /tmp/cci-test/workspace
+          at: /workspace
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
       - run: ls -l
