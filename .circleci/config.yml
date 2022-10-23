@@ -17,16 +17,16 @@ jobs:
       - run:
           name:  Get commit message
           command: |
-            echo "export COMMIT_MESSAGE='$(git log --format=oneline -n 1 $CIRCLE_SHA1)'" >> $BASH_ENV
+            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
       - run: 
           name: mkdir -p workspace
           command: mkdir -p workspace
       - run: 
           name: Put data is workspace 
           command: |
-            echo "export Git_Commit= $COMMIT_MESSAGE" >> workspace/new-env-vars
+            echo "export QABox=$QANo" >> workspace/new-env-vars
             cat workspace/new-env-vars >> $BASH_ENV
-            echo $Git_Commit
       - persist_to_workspace:
           root: workspace
           paths:
@@ -43,7 +43,7 @@ jobs:
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
       - run: ls -l
-      - run: echo ${Git_Commit:-NULL}
+      - run: echo ${QABox:-NULL}
       - persist_to_workspace:
           root: workspace
           paths:
