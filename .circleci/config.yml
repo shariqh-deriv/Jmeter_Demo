@@ -23,7 +23,9 @@ jobs:
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
             echo $QANo
-            echo "export BAZ=baz.`date +%Y%m%d.%H%M`" >> $BASH_ENV
+            echo "export QANo" >>workspace/new-env-vars
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo ${QANo:-NULL}
       - persist_to_workspace:
           root: workspace
           paths:
