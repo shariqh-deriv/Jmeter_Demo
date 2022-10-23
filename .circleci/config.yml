@@ -1,5 +1,5 @@
 defaults: &defaults
-  working_directory: ~/repo
+  working_directory: /tmp/cci-test
 version: 2.1
 jobs:
   Install_Git:
@@ -44,20 +44,12 @@ jobs:
       - image: justb4/jmeter:latest
     steps:
       - attach_workspace:
-          at: /workspace
+          at: /tmp/cci-test/workspace
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
       - run: ls -l
       - run: echo ${QABox:-NULL}
       - run: echo ${TestLink:-NULL}
-      - run:
-          name: Make Result Directory
-          command: mkdir results_folder 
-      - run:
-          name:  Run JmeterTest
-          command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
-      - store_artifacts:
-          path: results_folder
       - persist_to_workspace:
           root: workspace
           paths:
