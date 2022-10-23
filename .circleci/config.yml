@@ -38,7 +38,6 @@ jobs:
           paths:
               - new-env-vars
 
-
   Jmeter_Report:
     <<: *defaults
     docker:
