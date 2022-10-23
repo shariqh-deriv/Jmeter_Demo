@@ -24,7 +24,7 @@ jobs:
       - run: 
           name: Put data is workspace 
           command: |
-            echo "export Git_Commit=COMMIT_MESSAGE" >> workspace/new-env-vars
+            echo "export Git_Commit= $COMMIT_MESSAGE" >> workspace/new-env-vars
             cat workspace/new-env-vars >> $BASH_ENV
             echo $Git_Commit
       - persist_to_workspace:
