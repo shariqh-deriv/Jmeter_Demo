@@ -37,68 +37,18 @@ jobs:
       - run: echo ${FOO:-NULL}
       - run: echo ${BAZ:-NULL}
       - run: echo ${BOB:-NULL}
-      - run: echo "export SUE=sue.`date +%Y%m%d.%H%M%S`" >>workspace/new-env-vars
-  s3:
-    <<: *defaults
-    docker:
-      - image: golang:latest
-    steps:
-      - attach_workspace:
-          at: /tmp/cci-test/workspace
-      - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo "This is running in the second job"
-      - run: ls -l
-      - run: echo ${FOO:-NULL}
-      - run: echo ${BAZ:-NULL}
-      - run: echo ${BOB:-NULL}
-      - run: echo ${SUE:-NULL}
-  s4:
-    <<: *defaults
-    docker:
-      - image: golang:latest
-    steps:
-      - attach_workspace:
-          at: /tmp/cci-test/workspace
-      - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo "This is running in the second job"
-      - run: ls -l
-      - run: echo ${FOO:-NULL}
-      - run: echo ${BAZ:-NULL}
-      - run: echo ${BOB:-NULL}
       - run: echo ${SUE:-NULL}
       - run: echo "export SUE=sue.`date +%Y%m%d.%H%M%S`" >>workspace/new-env-vars
       - persist_to_workspace:
           root: workspace
           paths:
               - new-env-vars
-  s5:
-    <<: *defaults
-    docker:
-      - image: golang:latest
-    steps:
-      - attach_workspace:
-          at: /tmp/cci-test/workspace
-      - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo "This is running in the second job"
-      - run: ls -l
-      - run: echo ${FOO:-NULL}
-      - run: echo ${BAZ:-NULL}
-      - run: echo ${BOB:-NULL}
-      - run: echo ${SUE:-NULL}
+  
 workflows:
-  version: 2
+  version: 2.1
   example_jobs:
     jobs:
       - s1
       - s2:
           requires:
             - s1
-      - s3:
-          requires:
-            - s2
-      - s4:
-          requires:
-            - s3
-      - s5:
-          requires:
-            - s4
