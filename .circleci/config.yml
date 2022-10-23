@@ -17,7 +17,8 @@ jobs:
           name:  Get commit message
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            echo QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
+            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
+            echo QANo
 
   # Job two with a unique name
   Jmeter_Report:
@@ -27,7 +28,7 @@ jobs:
       - checkout
       - run:
           name:  Get commit message
-          command: echo ${QANo}
+          command: echo QANo
       - run:
           name: Make Result Directory
           command: mkdir results_folder 
