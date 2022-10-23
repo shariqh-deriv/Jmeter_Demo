@@ -1,47 +1,104 @@
+defaults: &defaults
+  working_directory: /tmp/cci-test
 version: 2.1
-
 jobs:
-  # Job one with a unique name
-  Install_Git:
+  s1:
+    <<: *defaults
     docker:
-     - image: selenium/standalone-chrome
+      - image: golang:latest
     steps:
       - checkout
+      - run: pwd
       - run:
-          name: install appt-get
-          command: sudo apt-get update
-      - run:
-          name:  install git 
-          command: sudo apt-get -y install git
-      - run:
-          name:  Get commit message
-          command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            QANo="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
-            echo $QANo
-
-  # Job two with a unique name
-  Jmeter_Report:
+          name: set var
+          command: echo "export BAZ=baz.`date +%Y%m%d.%H%M`" >> $BASH_ENV
+      - run: echo "$BAZ"
+      - run: mkdir -p workspace
+      - run: echo "export FOO=foo.`date +%Y%m%d.%H%M%S`" >>workspace/new-env-vars
+      - run: echo "export BOB=$BAZ" >> workspace/new-env-vars
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo ${FOO:-NULL}
+      - run: echo ${BAZ:-NULL}
+      - run: echo ${BOB:-NULL}
+      - persist_to_workspace:
+          root: workspace
+          paths:
+              - new-env-vars
+  s2:
+    <<: *defaults
     docker:
-     - image: justb4/jmeter:latest
+      - image: golang:latest
     steps:
-      - checkout
-      - run:
-          name:  Get commit message
-          command: echo $QANo
-      - run:
-          name: Make Result Directory
-          command: mkdir results_folder 
-      - run:
-          name:  Run JmeterTest
-          command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
-      - store_artifacts:
-          path: results_folder
-
+      - attach_workspace:
+          at: /tmp/cci-test/workspace
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo "This is running in the second job"
+      - run: ls -l
+      - run: echo ${FOO:-NULL}
+      - run: echo ${BAZ:-NULL}
+      - run: echo ${BOB:-NULL}
+      - run: echo "export SUE=sue.`date +%Y%m%d.%H%M%S`" >>workspace/new-env-vars
+  s3:
+    <<: *defaults
+    docker:
+      - image: golang:latest
+    steps:
+      - attach_workspace:
+          at: /tmp/cci-test/workspace
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo "This is running in the second job"
+      - run: ls -l
+      - run: echo ${FOO:-NULL}
+      - run: echo ${BAZ:-NULL}
+      - run: echo ${BOB:-NULL}
+      - run: echo ${SUE:-NULL}
+  s4:
+    <<: *defaults
+    docker:
+      - image: golang:latest
+    steps:
+      - attach_workspace:
+          at: /tmp/cci-test/workspace
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo "This is running in the second job"
+      - run: ls -l
+      - run: echo ${FOO:-NULL}
+      - run: echo ${BAZ:-NULL}
+      - run: echo ${BOB:-NULL}
+      - run: echo ${SUE:-NULL}
+      - run: echo "export SUE=sue.`date +%Y%m%d.%H%M%S`" >>workspace/new-env-vars
+      - persist_to_workspace:
+          root: workspace
+          paths:
+              - new-env-vars
+  s5:
+    <<: *defaults
+    docker:
+      - image: golang:latest
+    steps:
+      - attach_workspace:
+          at: /tmp/cci-test/workspace
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo "This is running in the second job"
+      - run: ls -l
+      - run: echo ${FOO:-NULL}
+      - run: echo ${BAZ:-NULL}
+      - run: echo ${BOB:-NULL}
+      - run: echo ${SUE:-NULL}
 workflows:
-  Run_Test:
+  version: 2
+  example_jobs:
     jobs:
-      - Install_Git
-      - Jmeter_Report:
-          requires: 
-            - Install_Git
+      - s1
+      - s2:
+          requires:
+            - s1
+      - s3:
+          requires:
+            - s2
+      - s4:
+          requires:
+            - s3
+      - s5:
+          requires:
+            - s4
