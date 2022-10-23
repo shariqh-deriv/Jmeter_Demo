@@ -2,6 +2,8 @@ version: 2.1
 
 jobs:
   # Job one with a unique name
+  environment:
+    QANo = "test"
   Install_Git:
     docker:
      - image: selenium/standalone-chrome
