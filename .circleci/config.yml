@@ -49,8 +49,10 @@ jobs:
       - run: echo "This is running in the second job"
       - run: echo $QABox
       - run: echo $TestLink
+      - run: ls -l
       - run: cd ..
       - run: cd ..
+      - run: ls -l
       - run:
           name: Make Result Directory
           command: mkdir results_folder 
