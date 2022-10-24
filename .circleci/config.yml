@@ -1,5 +1,3 @@
-defaults: &defaults
-  working_directory: /tmp/cci-test
 version: 2.1
 jobs:
   Install_Git:
@@ -15,17 +13,23 @@ jobs:
           name:  install git 
           command: sudo apt-get -y install git
       - run:
-          name:  Get commit message
+          name:  Get QA No. and Testlink message
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
+            echo "export testLink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'" >> $BASH_ENV
       - run: 
           name: mkdir -p workspace
           command: mkdir -p workspace
       - run: 
-          name: Put data is workspace 
+          name: Put QA No is workspace 
           command: |
             echo "export QABox=$QANo" >> workspace/new-env-vars
+            cat workspace/new-env-vars >> $BASH_ENV
+      - run: 
+          name: Put test-link is workspace 
+          command: |
+            echo "export TestLink=$testLink" >> workspace/new-env-vars
             cat workspace/new-env-vars >> $BASH_ENV
       - persist_to_workspace:
           root: workspace
@@ -43,11 +47,8 @@ jobs:
           at: /tmp/cci-test/workspace
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
-      - run: ls -l
-      - run: ls
       - run: echo ${QABox:-NULL}
-      - run: ls -l
-      - run: ls
+      - run: echo ${TestLink:-NULL}
       - run:
           name: Make Result Directory
           command: mkdir results_folder 
