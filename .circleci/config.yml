@@ -50,10 +50,9 @@ jobs:
       - run: echo $QABox
       - run: echo $TestLink
       - run: pwd
-      - run: pwd && cd /tmp
       - run:
           name:  Run JmeterTest
-          command: jmeter -n -t JmxFile/DerivPage$TestLink.jmx -l jmeter_report.csv -e -o results_folder
+          command: jmeter -n -t JmxFile/DerivPage$TestLink.jmx -l jmeter_report.csv -e -o results_folder && cd ~/repo
       - store_artifacts:
           path: results_folder
       - persist_to_workspace:
