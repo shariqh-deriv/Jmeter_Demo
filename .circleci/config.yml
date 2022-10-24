@@ -49,14 +49,13 @@ jobs:
       - run: echo "This is running in the second job"
       - run: echo $QABox
       - run: echo $TestLink
+      - run: ls -l
       - run: cd ..
       - run: cd ..
-      - run:
-          name: Make Result Directory
-          command: mkdir results_folder 
+      - run: ls -l
       - run:
           name:  Run JmeterTest
-          command: jmeter -n -t JmxFile/DerivPage$TestLink.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+          command: jmeter -n -t JmxFile/DerivPage$TestLink.jmx -l jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
       - persist_to_workspace:
@@ -72,5 +71,3 @@ workflows:
       - Jmeter_Report:
           requires:
             - Install_Git
-
-
