@@ -41,8 +41,8 @@ jobs:
     docker:
       - image: justb4/jmeter:latest
     steps:
-      - checkout
-            path: /tmp/cci-test
+      paths: 
+        tmp/cci-test
       - attach_workspace:
           at: /tmp/cci-test/workspace
       - run: cat workspace/new-env-vars >> $BASH_ENV
