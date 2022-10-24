@@ -36,7 +36,6 @@ jobs:
           paths:
               - new-env-vars
 
-
   Jmeter_Report:
     working_directory: /tmp/cci-test
     docker:
@@ -54,7 +53,7 @@ jobs:
           command: mkdir results_folder 
       - run:
           name:  Run JmeterTest
-          command: jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
+          command: jmeter -n -t JmxFile/DerivPageProduction.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
       - persist_to_workspace:
