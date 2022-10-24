@@ -39,7 +39,6 @@ jobs:
               - new-env-vars
 
   Jmeter_Report:
-    <<: *defaults
     docker:
       - image: justb4/jmeter:latest
     steps:
