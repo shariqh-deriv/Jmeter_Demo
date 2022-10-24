@@ -1,58 +1,71 @@
 version: 2.1
-
-default: &default
-  docker:
-    - image: selenium/standalone-chrome
-  working_directory: ~/repo
-
-alias:
-  - &app_get
-    run:
-     name: install apt get
-     command: 'sudo apt-get update'
-
-  - &git_install
-    run:
-     name:  install git
-     command: 'sudo apt-get -y install git'
-  
-  - &fetch_commit
-    run:
-     name:  Get commit message
-     command: |
-      COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-      echo $COMMIT_MESSAGE
-
-  - &create_dir
-    run:
-     name:  Create directory for reports
-     command: |
-        mkdir results_folder
-
-  - &runTest
-    run:
-     name:  Run JmeterTest
-     command: |
-        jmeter -n -t JmxFile/DerivPage.jmx -l results_folder/jmeter_report.csv -e -o results_folder
-
 jobs:
-  CircleCI_Jmeter:
-    <<: *default
-    parallelism: 1
+  Install_Git:
+    working_directory: /tmp/cci-test
+    docker:
+      - image: selenium/standalone-chrome
     steps:
       - checkout
-      - *app_get
-      - *git_install
-      - *fetch_commit
-      - *create_dir
-      - store_test_results:
-          path:  results_folder
+      - run:
+          name: install appt-get
+          command: sudo apt-get update
+      - run:
+          name:  install git 
+          command: sudo apt-get -y install git
+      - run:
+          name:  Get QA No. and Testlink message
+          command: |
+            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+            echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
+            echo "export testLink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'" >> $BASH_ENV
+      - run: 
+          name: mkdir -p workspace
+          command: mkdir -p workspace
+      - run: 
+          name: Put QA No is workspace 
+          command: |
+            echo "export QABox=$QANo" >> workspace/new-env-vars
+            cat workspace/new-env-vars >> $BASH_ENV
+      - run: 
+          name: Put test-link is workspace 
+          command: |
+            echo "export TestLink=$testLink" >> workspace/new-env-vars
+            cat workspace/new-env-vars >> $BASH_ENV
+      - persist_to_workspace:
+          root: workspace
+          paths:
+              - new-env-vars
+
+  Jmeter_Report:
+    working_directory: /tmp/cci-test
+    docker:
+      - image: justb4/jmeter:latest
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/cci-test/workspace
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo "This is running in the second job"
+      - run: echo $QABox
+      - run: echo $TestLink
+      - run:
+          name: Make Result Directory
+          command: mkdir results_folder 
+      - run:
+          name:  Run JmeterTest
+          command: jmeter -n -t JmxFile/DerivPage$TestLink.jmx -l results_folder/jmeter_report.csv -e -o results_folder
       - store_artifacts:
-          path:  results_folder
- 
+          path: results_folder
+      - persist_to_workspace:
+          root: workspace
+          paths:
+              - new-env-vars
+  
 workflows:
   version: 2.1
-  workflow:
+  example_jobs:
     jobs:
-    - CircleCI_Jmeter
-        
+      - Install_Git
+      - Jmeter_Report:
+          requires:
+            - Install_Git
