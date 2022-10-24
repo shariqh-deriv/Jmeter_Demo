@@ -43,7 +43,12 @@ jobs:
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo "This is running in the second job"
       - run: ls -l
+      - run: ls
       - run: echo ${QABox:-NULL}
+      - run: cd ..
+      - run: cd ..
+      - run: ls -l
+      - run: ls
       - run:
           name: Make Result Directory
           command: mkdir results_folder 
