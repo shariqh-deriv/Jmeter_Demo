@@ -3,7 +3,7 @@ defaults: &defaults
 version: 2.1
 jobs:
   Install_Git:
-    <<: *defaults
+    working_directory: /tmp/cci-test
     docker:
       - image: selenium/standalone-chrome
     steps:
@@ -34,10 +34,11 @@ jobs:
 
 
   Jmeter_Report:
-    <<: *defaults
+    working_directory: /tmp/cci-test
     docker:
       - image: justb4/jmeter:latest
     steps:
+      - checkout
       - attach_workspace:
           at: /tmp/cci-test/workspace
       - run: cat workspace/new-env-vars >> $BASH_ENV
@@ -45,8 +46,6 @@ jobs:
       - run: ls -l
       - run: ls
       - run: echo ${QABox:-NULL}
-      - run: cd ..
-      - run: cd ..
       - run: ls -l
       - run: ls
       - run:
