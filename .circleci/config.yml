@@ -21,8 +21,8 @@ jobs:
             echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
             echo "export testLink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'" >> $BASH_ENV
       - run: 
-          name: mkdir -p workspace
-          command: mkdir -p workspace
+          name: mkdir workspace
+          command: mkdir workspace
       - run: 
           name: Put QANo is workspace 
           command: |
