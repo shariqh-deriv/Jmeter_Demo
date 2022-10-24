@@ -51,6 +51,7 @@ jobs:
       - run: echo $TestLink
       - run: pwd
       - run: cd .. && cd .. && cd .. && ls
+      - run: pwd
       - run:
           name:  Run JmeterTest
           command: jmeter -n -t JmxFile/DerivPage$TestLink.jmx -l jmeter_report.csv -e -o results_folder
