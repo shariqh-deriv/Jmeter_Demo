@@ -36,7 +36,6 @@ jobs:
           paths:
               - new-env-vars
 
-
   Jmeter_Report:
     working_directory: /tmp/cci-test
     docker:
