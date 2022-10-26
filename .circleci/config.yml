@@ -25,8 +25,7 @@ jobs:
           command: mkdir -p workspace
       - run: 
           name: Run Jmx file
-          command: |
-            jmeter -n -t JmxFile/DerivPage$testLink.jmx -l jmeter_report.csv -e -o results_folder
+          command: jmeter -n -t JmxFile/DerivPage$testLink.jmx -l jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
 
