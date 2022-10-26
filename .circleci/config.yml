@@ -16,10 +16,9 @@ jobs:
           name:  Get QA No. and Testlink message
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            set -- $COMMIT_MESSAGE
             echo this is the commit message $COMMIT_MESSAGE
-            echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
-            echo "export testLink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'" >> $BASH_ENV
+            QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'
+            testLink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'
       - run: 
           name: mkdir -p workspace
           command: mkdir -p workspace
@@ -29,22 +28,11 @@ jobs:
             echo "export QABox=$QANo" >> workspace/new-env-vars
             cat workspace/new-env-vars >> $BASH_ENV
       - run: 
-          name: Put test-link is workspace 
+          name: Run Jmx file
           command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            set -- $COMMIT_MESSAGE
-            echo this is the commit message $COMMIT_MESSAGE
-            export testLink="$(echo $COMMIT_MESSAGE | awk '{print $2}')"
-            echo this is the testlink $testLink
-            echo "export TestLink=$testLink" >> workspace/new-env-vars
-            cat workspace/new-env-vars >> $BASH_ENV
             jmeter -n -t JmxFile/DerivPage$testLink.jmx -l jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
-      - persist_to_workspace:
-          root: workspace
-          paths:
-              - new-env-vars
 
   # Jmeter_Report:
   #   working_directory: /tmp/cci-test
