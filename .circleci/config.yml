@@ -19,14 +19,11 @@ jobs:
             echo this is the commit message $COMMIT_MESSAGE
             QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'
             testLink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'
+            echo $QANo
+            echo $testLink
       - run: 
           name: mkdir -p workspace
           command: mkdir -p workspace
-      - run: 
-          name: Put QA No is workspace 
-          command: |
-            echo "export QABox=$QANo" >> workspace/new-env-vars
-            cat workspace/new-env-vars >> $BASH_ENV
       - run: 
           name: Run Jmx file
           command: |
