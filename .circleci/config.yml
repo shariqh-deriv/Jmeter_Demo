@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
   Install_Git:
-    working_directory: ~/repo
     docker:
       - image: justb4/jmeter:latest
     steps:
