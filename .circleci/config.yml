@@ -18,33 +18,10 @@ jobs:
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             set -- $COMMIT_MESSAGE
             echo this is the commit message $COMMIT_MESSAGE
-            echo "export QANo='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'" >> $BASH_ENV
-            echo "export testLink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'" >> $BASH_ENV
-      - run: 
-          name: mkdir -p workspace
-          command: mkdir -p workspace
-      - run: 
-          name: Put QA No is workspace 
-          command: |
-            echo "export QABox=$QANo" >> workspace/new-env-vars
-            cat workspace/new-env-vars >> $BASH_ENV
-      - run: 
-          name: Put test-link is workspace 
-          command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            set -- $COMMIT_MESSAGE
-            echo this is the commit message $COMMIT_MESSAGE
-            export testLink="$(echo $COMMIT_MESSAGE | awk '{print $2}')"
-            echo this is the testlink $testLink
-            echo "export TestLink=$testLink" >> workspace/new-env-vars
-            cat workspace/new-env-vars >> $BASH_ENV
             jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
-      - persist_to_workspace:
-          root: workspace
-          paths:
-              - new-env-vars
+
   
 workflows:
   version: 2.1
