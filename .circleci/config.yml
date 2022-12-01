@@ -15,7 +15,6 @@ jobs:
           name:  Run Jmeter
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            set -- $COMMIT_MESSAGE
             echo this is the commit message :  $COMMIT_MESSAGE
             mkdir results_folder 
             jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder
