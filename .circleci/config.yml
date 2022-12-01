@@ -16,10 +16,10 @@ jobs:
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             echo Commit message :  $COMMIT_MESSAGE
-            qano='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'
-            testlink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'
-            echo QANo : $qano
-            echo TestLink : testlink
+            export testlink='$(echo $COMMIT_MESSAGE | awk '{print $2}')'
+            export qano='$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')'
+            echo Testlink : $testlink
+            echo Qano : $qano
             mkdir results_folder 
             jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder
       - store_artifacts:
