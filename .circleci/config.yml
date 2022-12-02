@@ -17,7 +17,7 @@ jobs:
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
             echo Commit message :  $COMMIT_MESSAGE
             export testlink="$(echo $COMMIT_MESSAGE | awk '{print $2}')"
-            export qano="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')""
+            export qano="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
             echo Testlink : $testlink
             echo Qano : $qano
             mkdir results_folder 
