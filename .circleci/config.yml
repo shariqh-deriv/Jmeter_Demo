@@ -31,4 +31,3 @@ workflows:
   example_jobs:
     jobs:
       - Install_Git
-      
