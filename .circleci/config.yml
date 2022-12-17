@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  Install_Git:
+  run_Jmeter:
     docker:
       - image: justb4/jmeter:latest
     steps:
@@ -28,6 +28,16 @@ jobs:
   
 workflows:
   version: 2.1
-  example_jobs:
+  run_jmeter:
     jobs:
-      - Install_Git
+      - run_Jmeter
+  Schedule_Job:
+    triggers:
+      - schedule: 
+        cron: "0 * * * *"
+        filters:
+          branches:
+            only: 
+              - master
+    jobs:
+      -  run_Jmeter        
