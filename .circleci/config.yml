@@ -25,7 +25,6 @@ jobs:
       - store_artifacts:
           path: results_folder
 
-  
 workflows:
   version: 2.1
   run_jmeter:
