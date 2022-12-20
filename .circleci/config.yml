@@ -22,6 +22,8 @@ jobs:
             echo Qano : $qano
             mkdir results_folder 
             jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder
+            jmeter -n -t JmxFile/DerivcomConc.jmx -l jmeter_report.csv -e -o results_folder
+            jmeter -n -t JmxFile/DerivcomComplete.jmx -l jmeter_report.csv -e -o results_folder
       - store_artifacts:
           path: results_folder
 
