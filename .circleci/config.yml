@@ -53,11 +53,6 @@ jobs:
   
 workflows:
   version: 2.1
-  WorkFlow_name:
-    jobs:
-      - Job_run_Jmeter1
-      - Job_run_Jmeter2
-
   nightly_10am:
     triggers:
       - schedule:
