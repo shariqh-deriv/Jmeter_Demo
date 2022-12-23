@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  Job_run_Jmeter1:
+  run_Jmeter:
     docker:
       - image: justb4/jmeter:latest
     steps:
@@ -20,42 +20,17 @@ jobs:
             export qano="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
             echo Testlink : $testlink
             echo Qano : $qano
-            mkdir results_folder1
-            jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder1
+            mkdir results_folder 
+            jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder
       - store_artifacts:
-          path: results_folder1
-  
-  Job_run_Jmeter2:
-    docker:
-      - image: justb4/jmeter:latest
-    steps:
-      - checkout
-      - run:
-          name: apk update
-          command: apk update
-      - run:
-          name:  install git 
-          command: apk add git
-      - run:
-          name:  Run Jmeter
-          command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            echo Commit message :  $COMMIT_MESSAGE
-            export testlink="$(echo $COMMIT_MESSAGE | awk '{print $2}')"
-            export qano="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
-            echo Testlink : $testlink
-            echo Qano : $qano
-            mkdir results_folder2
-            jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder2
-      - store_artifacts:
-          path: results_folder2
+          path: results_folder
 
   
 workflows:
   version: 2.1
-  run_jmeter1:
+  run_jmeter:
     jobs:
-    - run_Jmeter1
+      - run_Jmeter
   nightly_10am:
     triggers:
       - schedule:
@@ -65,7 +40,7 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter1 
+      - run_Jmeter 
   nightly_2pm:
     triggers:
       - schedule:
@@ -75,7 +50,7 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter1
+      - run_Jmeter
   nightly_6pm:
     triggers:
       - schedule:
@@ -85,4 +60,4 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter1  
+      - run_Jmeter    
