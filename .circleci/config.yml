@@ -24,7 +24,6 @@ jobs:
             jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder1
       - store_artifacts:
           path: results_folder1
-jobs:
   run_Jmeter_2:
     docker:
       - image: justb4/jmeter:latest
@@ -49,8 +48,7 @@ jobs:
             jmeter -n -t JmxFile/Derivcom_main.jmx -l jmeter_report.csv -e -o results_folder2
       - store_artifacts:
           path: results_folder2
-jobs:
-  run_Jmeter_1:
+  run_Jmeter_3:
     docker:
       - image: justb4/jmeter:latest
     steps:
