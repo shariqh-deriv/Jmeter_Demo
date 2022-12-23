@@ -20,10 +20,12 @@ jobs:
             export qano="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
             echo Testlink : $testlink
             echo Qano : $qano
-            mkdir results_folder 
-            jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder
+            mkdir results_folder1
+            mkdir results_folder2
+            jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder1
+            jmeter -n -t JmxFile/Derivcom_main.jmx -l jmeter_report.csv -e -o results_folder2
       - store_artifacts:
-          path: results_folder
+          path: results_folder1
 
   
 workflows:
