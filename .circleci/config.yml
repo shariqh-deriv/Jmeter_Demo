@@ -55,8 +55,8 @@ workflows:
   version: 2.1
   WorkFlow_name:
     jobs:
-    - Job_run_Jmeter1
-    - Job_run_Jmeter2
+      - Job_run_Jmeter1
+      - Job_run_Jmeter2
 
   nightly_10am:
     triggers:
@@ -68,6 +68,7 @@ workflows:
                 - master
     jobs:
       - run_Jmeter1 
+
   nightly_2pm:
     triggers:
       - schedule:
@@ -78,6 +79,7 @@ workflows:
                 - master
     jobs:
       - run_Jmeter1
+      
   nightly_6pm:
     triggers:
       - schedule:
