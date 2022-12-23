@@ -22,31 +22,8 @@ jobs:
             echo Qano : $qano
             mkdir results_folder1
             jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder1
-  
-  Job_run_Jmeter2:
-    docker:
-      - image: justb4/jmeter:latest
-    steps:
-      - checkout
-      - run:
-          name: apk update
-          command: apk update
-      - run:
-          name:  install git 
-          command: apk add git
-      - run:
-          name:  Run Jmeter
-          command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            echo Commit message :  $COMMIT_MESSAGE
-            export testlink="$(echo $COMMIT_MESSAGE | awk '{print $2}')"
-            export qano="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
-            echo Testlink : $testlink
-            echo Qano : $qano
-            mkdir results_folder2
-            jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder2
       - store_artifacts:
-          path: results_folder2
+          path: results_folder1
 
   
 workflows:
