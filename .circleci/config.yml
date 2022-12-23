@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  run_Jmeter:
+  run_Jmeter1:
     docker:
       - image: justb4/jmeter:latest
     steps:
@@ -28,9 +28,9 @@ jobs:
   
 workflows:
   version: 2.1
-  run_jmeter:
+  run_jmeter1:
     jobs:
-      - run_Jmeter
+      - run_Jmeter1
   nightly_10am:
     triggers:
       - schedule:
@@ -40,7 +40,7 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter 
+      - run_Jmeter1 
   nightly_2pm:
     triggers:
       - schedule:
@@ -50,7 +50,7 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter
+      - run_Jmeter1
   nightly_6pm:
     triggers:
       - schedule:
@@ -60,4 +60,4 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter    
+      - run_Jmeter1  
