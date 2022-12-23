@@ -22,8 +22,6 @@ jobs:
             echo Qano : $qano
             mkdir results_folder1
             jmeter -n -t JmxFile/Derivcom.jmx -l jmeter_report.csv -e -o results_folder1
-      - store_artifacts:
-          path: results_folder1
   
   Job_run_Jmeter2:
     docker:
