@@ -26,6 +26,7 @@ jobs:
             jmeter -n -t JmxFile/Derivcom_main.jmx -l jmeter_report.csv -e -o results_folder2
       - store_artifacts:
           path: results_folder1
+          path: results_folder2
 
   
 workflows:
