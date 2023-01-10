@@ -16,7 +16,7 @@ jobs:
           command: |
             wget https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar
             mv ./cmdrunner-2.2.jar ${JMETER_HOME}/lib
-            wget https://central.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.8/jmeter-plugins-manager-1.8.jar
+            wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.8/jmeter-plugins-manager-1.8.jar
             mv ./jmeter-plugins-manager-1.8.jar ${JMETER_HOME}/lib/ext
       - run:
           name:  Run Jmeter
