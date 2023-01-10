@@ -14,12 +14,8 @@ jobs:
       - run:
           name: Install plugin
           command: |
-            wget http://central.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.8/jmeter-plugins-manager-1.8.jar
-            mv ./jmeter-plugins-manager-1.8.jar ${JMETER_HOME}/lib/ext
             wget http://repo1.maven.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar
             mv ./cmdrunner-2.2.jar ${JMETER_HOME}/lib
-            java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-1.8.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
-            ${JMETER_HOME}/bin/PluginsManagerCMD.sh install-all-except 
       - run:
           name:  Run Jmeter
           command: |
