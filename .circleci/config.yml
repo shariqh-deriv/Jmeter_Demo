@@ -20,7 +20,6 @@ jobs:
             mv ./jmeter-plugins-manager-1.8.jar ${JMETER_HOME}/lib/ext
             java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-1.8.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
             PluginsManagerCMD.sh install jpgc-casutg,jpgc-tst
-
       - run:
           name:  Run Jmeter
           command: |
