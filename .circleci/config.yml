@@ -12,6 +12,13 @@ jobs:
           name:  install git 
           command: apk add git
       - run:
+          name: Install plugin
+          command: |
+            curl -L --silent https://jmeter-plugins.org/get/ > ${JMETER_HOME}/lib/ext/jmeter-plugins-manager.jar
+            curl -L --silent https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar >${JMETER_HOME}/lib/cmdrunner-2.2.jar
+            java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
+            ${JMETER_BIN}/./PluginsManagerCMD.sh install jpgc-casutg
+      - run:
           name:  Run Jmeter
           command: |
             COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
