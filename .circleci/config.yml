@@ -14,8 +14,8 @@ jobs:
       - run:
           name: Install plugin
           command: |
-            curl -O https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.7/jmeter-plugins-manager-1.7.jar
-            curl -O https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar > ${JMETER_HOME}/lib/cmdrunner-2.2.jar
+            curl -L --silent https://jmeter-plugins.org/get/ > ${JMETER_HOME}/lib/ext/jmeter-plugins-manager.jar
+            curl -L --silent https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar > ${JMETER_HOME}/lib/cmdrunner-2.2.jar
             java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
             ${JMETER_BIN}/./PluginsManagerCMD.sh install jpgc-casutg
       - run:
