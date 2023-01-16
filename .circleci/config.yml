@@ -4,7 +4,7 @@ alias:
   - &create_dir
     run:
       name:  Creating directory for reports
-      command: sudo mkdir results
+      command: mkdir results
   - &install_plugin
     run:
       name:  Install plugins
