@@ -1,16 +1,14 @@
 version: 2.1
+
 jobs:
-  run_Jmeter:
+  jmeter_staging:
     docker:
       - image: justb4/jmeter:latest
     steps:
       - checkout
       - run:
-          name: apk update
-          command: apk update
-      - run:
-          name:  install git 
-          command: apk add git
+          name: Create directory
+          command: mkdir results
       - run:
           name: Install plugin
           command: |
@@ -21,26 +19,16 @@ jobs:
             java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-1.8.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
             PluginsManagerCMD.sh install jpgc-casutg,jpgc-tst
       - run:
-          name:  Run Jmeter
+          name:  Run JMeter
           command: |
-            COMMIT_MESSAGE=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-            echo Commit message :  $COMMIT_MESSAGE
-            export testlink="$(echo $COMMIT_MESSAGE | awk '{print $2}')"
-            export qano="$(echo -n $COMMIT_MESSAGE | grep -o '[^ ]\+$')"
-            echo Testlink : $testlink
-            echo Qano : $qano
-            mkdir results_folder1
-            jmeter -n -t JmxFile/dryRun_derivcom.jmx -l jmeter_report.csv -e -o results_folder1
+            jmeter -n -t JmxFile/stg_dryRun_derivcom.jmx -l results/jmeter_report.csv -e -o results
       - store_artifacts:
-          path: results_folder1
-
-
+          path: results
   
 workflows:
-  version: 2.1
   run_jmeter:
     jobs:
-      - run_Jmeter
+      - jmeter_staging
   nightly_10am:
     triggers:
       - schedule:
@@ -50,7 +38,7 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter 
+      - jmeter_staging 
   nightly_2pm:
     triggers:
       - schedule:
@@ -60,7 +48,7 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter
+      - jmeter_staging
   nightly_6pm:
     triggers:
       - schedule:
@@ -70,4 +58,4 @@ workflows:
               only:
                 - master
     jobs:
-      - run_Jmeter    
+      - jmeter_staging    
