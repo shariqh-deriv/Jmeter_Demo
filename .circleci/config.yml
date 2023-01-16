@@ -1,27 +1,46 @@
 version: 2.1
 
+alias:
+  - &create_dir
+    run:
+      name:  Creating directory for reports
+      command: sudo mkdir results
+  - &install_plugin
+    run:
+      name:  Install plugins
+      command: |
+        wget https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar
+        mv ./cmdrunner-2.3.jar ${JMETER_HOME}/lib
+        wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.8/jmeter-plugins-manager-1.8.jar
+        mv ./jmeter-plugins-manager-1.8.jar ${JMETER_HOME}/lib/ext
+        java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-1.8.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
+        PluginsManagerCMD.sh install jpgc-casutg,jpgc-tst
+
 jobs:
   jmeter_staging:
     docker:
       - image: justb4/jmeter:latest
     steps:
       - checkout
-      - run:
-          name: Create directory
-          command: mkdir results
-      - run:
-          name: Install plugin
-          command: |
-            wget https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar
-            mv ./cmdrunner-2.3.jar ${JMETER_HOME}/lib
-            wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.8/jmeter-plugins-manager-1.8.jar
-            mv ./jmeter-plugins-manager-1.8.jar ${JMETER_HOME}/lib/ext
-            java -cp ${JMETER_HOME}/lib/ext/jmeter-plugins-manager-1.8.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
-            PluginsManagerCMD.sh install jpgc-casutg,jpgc-tst
+      - *create_dir
+      - *install_plugin
       - run:
           name:  Run JMeter
           command: |
             jmeter -n -t JmxFile/stg_dryRun_derivcom.jmx -l results/jmeter_report.csv -e -o results
+      - store_artifacts:
+          path: results
+  jmeter_prod:
+    docker:
+      - image: justb4/jmeter:latest
+    steps:
+      - checkout
+      - *create_dir
+      - *install_plugin
+      - run:
+          name:  Run JMeter
+          command: |
+            jmeter -n -t JmxFile/prod_dryRun_derivcom.jmx -l results/jmeter_report.csv -e -o results
       - store_artifacts:
           path: results
   
@@ -29,6 +48,7 @@ workflows:
   run_jmeter:
     jobs:
       - jmeter_staging
+      - jmeter_prod
   nightly_10am:
     triggers:
       - schedule:
@@ -38,7 +58,8 @@ workflows:
               only:
                 - master
     jobs:
-      - jmeter_staging 
+      - jmeter_staging
+      - jmeter_prod
   nightly_2pm:
     triggers:
       - schedule:
@@ -49,6 +70,7 @@ workflows:
                 - master
     jobs:
       - jmeter_staging
+      - jmeter_prod
   nightly_6pm:
     triggers:
       - schedule:
@@ -58,4 +80,5 @@ workflows:
               only:
                 - master
     jobs:
-      - jmeter_staging    
+      - jmeter_staging
+      - jmeter_prod
